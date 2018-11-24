@@ -20,6 +20,7 @@
     </properties>
 
     <dependencyManagement>
+        <!-- 规定常用依赖版本 -->
         <dependencies>
             <dependency>
                 <groupId>io.spring.platform</groupId>
