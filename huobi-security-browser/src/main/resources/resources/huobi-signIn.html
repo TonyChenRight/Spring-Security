@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>标准登录页</title>
+</head>
+<body>
+    <div class="jumbotron">
+        <h2 class="display-4">标准表单登录</h2>
+        <form action="/authentication/form" method="post">
+            <div class="form-group">
+                <label for="username">用户名：</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名">
+            </div>
+            <div class="form-group">
+                <label for="password">密码：</label>
+                <input type="text" class="form-control" id="password" name="password" placeholder="请输入密码">
+            </div>
+            <div class="form-group">
+                <label for="imageCode">图形验证码：</label>
+                <input type="text" class="form-control" id="imageCode" name="imageCode" placeholder="请输入验证码">
+                <img src="/code/image?width=200" class="img-fluid img-thumbnail" alt="加载中...">
+            </div>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="remember-me" name="remember-me" value="true">
+                <label class="form-check-label" for="remember-me">记住我</label>
+            </div>
+            <button type="submit" class="btn btn-primary">登录</button>
+        </form>
+    </div>
+
+
+    <div class="jumbotron">
+        <h2 class="display-4">标准短信登录</h2>
+        <form action="/authentication/mobile" method="post">
+            <div class="form-group">
+                <label for="mobile">手机号：</label>
+                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="请输入手机号" value="13012345678">
+            </div>
+            <div class="form-group">
+                <label for="smsCode">短信验证码：</label>
+                <input type="text" class="form-control" id="smsCode" name="smsCode" placeholder="请输入验证码">
+                <a href="/code/sms?mobile=13012345678" class="btn btn-default" type="button">发送验证码</a>
+            </div>
+            <button type="submit" class="btn btn-primary">登录</button>
+        </form>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

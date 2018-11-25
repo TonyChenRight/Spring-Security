@@ -12,7 +12,7 @@
 >* huobi-serurity-app : app相关特定代码
 >* huobi-serurity-demo : 样例程序
 
-## 技术点
+## 基本技术点  tag v1.0 
 >* restful api编写及常用注解
 >* jsonPath语法限定path参数
 >* @JsonView注解控制返回视图
@@ -21,3 +21,9 @@
 >* 异步处理：Callable方式、DeferredResult方式
 >* swagger-ui 2生成api文档
 >* WireMock 伪造api接口
+
+## spring security相关 tag v1.1
+>* 基于用户名和密码的表单登录
+>* 自定义成功和失败处理器
+>* 记住我功能实现
+>* 基于短信验证码的表单登录
