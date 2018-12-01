@@ -31,3 +31,5 @@
 ## spring social相关 tag v1.2
 >* OAuth2.0协议支持
 >* QQ登录实现
+>* 微信登录实现
+>* 单机及集群下session管理

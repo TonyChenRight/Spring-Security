@@ -1,8 +1,10 @@
 package com.huobi.security.validate.code;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class ValidateCode {
+public class ValidateCode implements Serializable {
+    private static final long serialVersionUID = 2411438122633195475L;
     private String code;
     private LocalDateTime expireTime;
 

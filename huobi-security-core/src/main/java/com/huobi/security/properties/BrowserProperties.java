@@ -4,11 +4,15 @@ public class BrowserProperties {
 
     private String signUpUrl="/huobi-signUp.html";
 
+    private String signOutUrl;
+
     private String loginPage=SecurityConstants.DEFAULT_LOGIN_PAGE_URL;
 
     private LoginType loginType = LoginType.JSON;
 
     private int rememberMeSeconds= 3600;
+
+    private SessionProperties session=new SessionProperties();
 
     public String getLoginPage() {
         return loginPage;
@@ -40,5 +44,21 @@ public class BrowserProperties {
 
     public void setSignUpUrl(String signUpUrl) {
         this.signUpUrl = signUpUrl;
+    }
+
+    public SessionProperties getSession() {
+        return session;
+    }
+
+    public void setSession(SessionProperties session) {
+        this.session = session;
+    }
+
+    public String getSignOutUrl() {
+        return signOutUrl;
+    }
+
+    public void setSignOutUrl(String signOutUrl) {
+        this.signOutUrl = signOutUrl;
     }
 }

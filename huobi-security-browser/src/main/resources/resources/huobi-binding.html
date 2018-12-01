@@ -6,13 +6,16 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <title>主页</title>
+    <title>标准绑定页</title>
 </head>
 <body>
     <div class="jumbotron">
-        <h2 class="display-4">首页</h2>
-        <a role="button" href="/signOut" class="btn btn-primary">退出</a>
+        <h2 class="display-4">标准绑定页面</h2>
+        <form action="/connect/weixin" method="post">
+            <button type="submit" class="btn btn-primary">绑定微信</button>
+        </form>
     </div>
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

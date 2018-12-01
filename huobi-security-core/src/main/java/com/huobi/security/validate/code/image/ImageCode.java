@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 
 public class ImageCode extends ValidateCode {
+
     private BufferedImage image;
 
     public ImageCode(BufferedImage image,String code,int expireIn){
