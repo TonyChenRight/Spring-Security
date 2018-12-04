@@ -1,4 +1,4 @@
-package com.huobi.security.browser.support;
+package com.huobi.security.support;
 
 public class SocialUserInfo {
 

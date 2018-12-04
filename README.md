@@ -28,8 +28,12 @@
 >* 记住我功能实现
 >* 基于短信验证码的表单登录
 
-## spring social相关 tag v1.2
+## spring social相关
 >* OAuth2.0协议支持
 >* QQ登录实现
 >* 微信登录实现
 >* 单机及集群下session管理
+
+## spring security oauth相关
+>* Spring Security OAuth相关重构
+>* JWT token令牌配置

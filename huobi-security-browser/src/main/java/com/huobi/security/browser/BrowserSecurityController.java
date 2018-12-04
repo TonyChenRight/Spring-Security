@@ -1,9 +1,8 @@
 package com.huobi.security.browser;
 
-import com.huobi.security.browser.support.SimpleResponse;
-import com.huobi.security.browser.support.SocialUserInfo;
-import com.huobi.security.properties.SecurityConstants;
 import com.huobi.security.properties.SecurityProperties;
+import com.huobi.security.support.SimpleResponse;
+import com.huobi.security.support.SocialUserInfo;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;

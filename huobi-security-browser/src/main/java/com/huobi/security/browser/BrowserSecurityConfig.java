@@ -129,15 +129,6 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 //                .apply(smsCodeAuthenticationSecurityConfig);
     }
 
-    /**
-     * 配置加密解密类 ,每次生成密码不一样，有盐值的存在
-     * @return
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
     @Bean
     public PersistentTokenRepository persistentTokenRepository(){
         JdbcTokenRepositoryImpl tokenRepository=new JdbcTokenRepositoryImpl();

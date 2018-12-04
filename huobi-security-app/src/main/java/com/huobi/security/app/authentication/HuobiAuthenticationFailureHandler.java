@@ -1,4 +1,4 @@
-package com.huobi.security.browser.authentication;
+package com.huobi.security.app.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huobi.security.properties.LoginType;

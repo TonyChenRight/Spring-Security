@@ -4,12 +4,16 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.huobi.dto.User;
 import com.huobi.dto.UserQueryCondition;
 import com.huobi.exception.UserNotExistException;
+import com.huobi.security.app.social.AppSignUpUtils;
+import com.huobi.security.properties.SecurityProperties;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,12 +30,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
@@ -42,11 +49,18 @@ public class UserController {
     @Autowired
     private ProviderSignInUtils providerSignInUtils;
 
+    @Autowired
+    private AppSignUpUtils appSignUpUtils;
+
+    @Autowired
+    private SecurityProperties securityProperties;
+
     @PostMapping("/regist")
     public void regist(User user, HttpServletRequest req){
         //不管是注册用户还是绑定用户，都会拿到一个用户唯一标识
         String userId = user.getUsername();
-        providerSignInUtils.doPostSignUp(userId,new ServletWebRequest(req));
+//        providerSignInUtils.doPostSignUp(userId,new ServletWebRequest(req));
+        appSignUpUtils.doPostSiginUp(new ServletWebRequest(req),userId);
     }
 
     /**
@@ -55,7 +69,13 @@ public class UserController {
      * @return
      */
     @RequestMapping("/me")
-    public Object getCurrentUser(@AuthenticationPrincipal UserDetails user){
+    public Object getCurrentUser(Authentication user,HttpServletRequest request) throws UnsupportedEncodingException {
+        String header = request.getHeader("Authorization");
+        String token = StringUtils.substringAfter(header,"bearer ");
+        Claims body = Jwts.parser().setSigningKey(securityProperties.getOauth2().getJwtSigningKey().getBytes("UTF-8"))
+                .parseClaimsJws(token).getBody();
+        String company = (String)body.get("company");
+        System.out.println("--> "+company);
 //    public Object getCurrentUser(Authentication authentication){
 //        return SecurityContextHolder.getContext().getAuthentication();
         return user;

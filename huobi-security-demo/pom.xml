@@ -12,9 +12,14 @@
     <artifactId>huobi-security-demo</artifactId>
 
     <dependencies>
+        <!--<dependency>-->
+            <!--<groupId>com.huobi.security</groupId>-->
+            <!--<artifactId>huobi-security-browser</artifactId>-->
+            <!--<version>${huobi.security.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.huobi.security</groupId>
-            <artifactId>huobi-security-browser</artifactId>
+            <artifactId>huobi-security-app</artifactId>
             <version>${huobi.security.version}</version>
         </dependency>
         <dependency>
@@ -49,6 +54,12 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.7.0</version>
         </dependency>
     </dependencies>
 

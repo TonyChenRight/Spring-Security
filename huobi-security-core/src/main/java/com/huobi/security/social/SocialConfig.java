@@ -1,6 +1,7 @@
 package com.huobi.security.social;
 
 import com.huobi.security.properties.SecurityProperties;
+import com.huobi.security.social.support.SocialAuthenticationFilterPostProcessor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,6 +38,11 @@ public class SocialConfig extends SocialConfigurerAdapter {
     @Autowired(required = false)
     private ConnectionSignUp connectionSignUp;
 
+
+    @Autowired(required = false)
+    private SocialAuthenticationFilterPostProcessor socialAuthenticationFilterPostProcessor;
+
+
     @Override
     public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
         //Encryptors 是加解密工具
@@ -53,6 +59,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
         String filterProcessesUrl  = securityProperties.getSocial().getFilterProcessesUrl();
         HuobiSpringSocialConfigurer configurer =new HuobiSpringSocialConfigurer(filterProcessesUrl);
         configurer.signupUrl(securityProperties.getBrowser().getSignUpUrl());
+        configurer.setSocialAuthenticationFilterPostProcessor(socialAuthenticationFilterPostProcessor);
         return configurer;
     }
 
