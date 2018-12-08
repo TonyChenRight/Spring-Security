@@ -3,7 +3,7 @@
 ## 主要学习技术
 >* spring security
 >* spring social
->* spring security oauth
+>* spring security oauth2
 
 ## 项目结构
 >* doc : 存放使用说明及初始化语句
@@ -22,7 +22,7 @@
 >* @valid、hibernate-validator常用校验注解及使用自定义注解
 >* filter过滤器、interceptor拦截器、aspect切面的使用及配置
 >* 异步处理：Callable方式、DeferredResult方式
->* swagger-ui 2生成api文档
+>* swagger-ui 2生成api文档（最新使用swagger-bootstrap-ui）
 >* WireMock 伪造api接口
 
 ## spring security相关 tag v1.1
@@ -45,13 +45,15 @@
 >* spring security授权方法
 >* Spring 表达式
 
-## 项目使用 
+## 项目使用  tag v2.0
 >* 1.引入依赖(pom.xml)
-<dependency>
-	<groupId>com.huobi.security</groupId>
-	<artifactId>huobi-security-browser</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-</dependency>
+``` 
+    <dependency>
+        <groupId>com.huobi.security</groupId>
+        <artifactId>huobi-security-browser</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+```
 
 >* 2.配置系统(参见 application-example.properties)
 
@@ -60,8 +62,11 @@
 >* 4.如果需要记住我功能，需要创建数据库表(参见 db.sql)
 
 >* 5.如果需要社交登录功能，需要以下额外的步骤
- >* 5.1).配置appId和appSecret
- >* 5.2).创建并配置用户注册页面，并实现注册服务(需要配置访问权限)，注意在服务中要调用ProviderSignInUtils的doPostSignUp方法。
- >* 5.3).添加SocialUserDetailsService接口实现
- >* 5.4).创建社交登录用的表 (参见 db.sql)
- 
+``` 
+    >* 1).配置appId和appSecret
+    >* 2).创建并配置用户注册页面，并实现注册服务(需要配置访问权限)，注意在服务中要调用ProviderSignInUtils的doPostSignUp方法。
+    >* 3).添加SocialUserDetailsService接口实现
+    >* 4).创建社交登录用的表 (参见 db.sql)
+```
+
+>* 6.登录用户名为admin,密码123456
