@@ -2,7 +2,11 @@ package com.huobi.security.social.support;
 
 import org.springframework.social.security.SocialAuthenticationFilter;
 
-public interface SocialAuthenticationFilterPostProcessor {
+
+/**
+ * SocialAuthenticationFilter后处理器，用于在不同环境下个性化社交登录的配置
+ */
+ public interface SocialAuthenticationFilterPostProcessor {
     /**
      * @param socialAuthenticationFilter
      */

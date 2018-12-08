@@ -13,6 +13,7 @@ import org.springframework.util.Assert;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 public class OpenIdAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
     // ~ Static fields/initializers
     // =====================================================================================
@@ -90,7 +91,6 @@ public class OpenIdAuthenticationFilter extends AbstractAuthenticationProcessing
     /**
      * Sets the parameter name which will be used to obtain the username from
      * the login request.
-     *
      *            the parameter name. Defaults to "username".
      */
     public void setOpenIdParameter(String openIdParameter) {
@@ -123,4 +123,5 @@ public class OpenIdAuthenticationFilter extends AbstractAuthenticationProcessing
     public void setProviderIdParameter(String providerIdParameter) {
         this.providerIdParameter = providerIdParameter;
     }
+
 }

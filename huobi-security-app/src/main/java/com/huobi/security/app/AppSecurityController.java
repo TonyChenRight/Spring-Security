@@ -1,7 +1,9 @@
 package com.huobi.security.app;
 
-import com.huobi.security.app.social.AppSignUpUtils;
-import com.huobi.security.support.SocialUserInfo;
+import com.huobi.security.app.social.AppSingUpUtils;
+import com.huobi.security.properties.SecurityConstants;
+import com.huobi.security.social.SocialController;
+import com.huobi.security.social.support.SocialUserInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,26 +16,27 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 @RestController
-public class AppSecurityController {
+public class AppSecurityController extends SocialController {
 
     @Autowired
     private ProviderSignInUtils providerSignInUtils;
 
     @Autowired
-    private AppSignUpUtils appSignUpUtils;
+    private AppSingUpUtils appSingUpUtils;
 
-    @GetMapping("/social/signUp")
+    /**
+     * 需要注册时跳到这里，返回401和用户信息给前端
+     * @param request
+     * @return
+     */
+    @GetMapping(SecurityConstants.DEFAULT_SOCIAL_USER_INFO_URL)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public SocialUserInfo getSocialUserInfo(HttpServletRequest request){
-        SocialUserInfo userInfo =new SocialUserInfo();
+    public SocialUserInfo getSocialUserInfo(HttpServletRequest request) {
         Connection<?> connection = providerSignInUtils.getConnectionFromSession(new ServletWebRequest(request));
-        userInfo.setProviderId(connection.getKey().getProviderId());
-        userInfo.setProviderUserId(connection.getKey().getProviderUserId());
-        userInfo.setNickname(connection.getDisplayName());
-        userInfo.setHeadimg(connection.getImageUrl());
-
-        appSignUpUtils.saveConnectionData(new ServletWebRequest(request),connection.createData());
-        return userInfo;
+        appSingUpUtils.saveConnectionData(new ServletWebRequest(request), connection.createData());
+        return buildSocialUserInfo(connection);
     }
+
 }

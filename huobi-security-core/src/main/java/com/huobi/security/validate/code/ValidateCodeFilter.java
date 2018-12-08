@@ -24,7 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 验证码校验过滤器，OncePerRequestFilter保证过滤器只被调用一次
+ * 校验验证码的过滤器
+ *
  */
 @Component("validateCodeFilter")
 public class ValidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
@@ -34,78 +35,81 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
      */
     @Autowired
     private AuthenticationFailureHandler authenticationFailureHandler;
-
     /**
      * 系统配置信息
      */
     @Autowired
     private SecurityProperties securityProperties;
-
     /**
      * 系统中的校验码处理器
      */
     @Autowired
     private ValidateCodeProcessorHolder validateCodeProcessorHolder;
-
     /**
      * 存放所有需要校验验证码的url
      */
-    private Map<String,ValidateCodeType> urlMap=new HashMap<>();
+    private Map<String, ValidateCodeType> urlMap = new HashMap<>();
     /**
-     * 验证请求url与配置url是否匹配的工具类
+     * 验证请求url与配置的url是否匹配的工具类
      */
-    private AntPathMatcher pathMatcher =new AntPathMatcher();
-
+    private AntPathMatcher pathMatcher = new AntPathMatcher();
 
     /**
      * 初始化要拦截的url配置信息
-     * @throws ServletException
      */
     @Override
     public void afterPropertiesSet() throws ServletException {
         super.afterPropertiesSet();
 
-        urlMap.put(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM,ValidateCodeType.IMAGE);
-        addUrlToMap(securityProperties.getCode().getImage().getUrl(),ValidateCodeType.IMAGE);
+        urlMap.put(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_FORM, ValidateCodeType.IMAGE);
+        addUrlToMap(securityProperties.getCode().getImage().getUrl(), ValidateCodeType.IMAGE);
 
-        urlMap.put(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,ValidateCodeType.SMS);
-        addUrlToMap(securityProperties.getCode().getSms().getUrl(),ValidateCodeType.SMS);
+        urlMap.put(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE, ValidateCodeType.SMS);
+        addUrlToMap(securityProperties.getCode().getSms().getUrl(), ValidateCodeType.SMS);
+    }
+
+    /**
+     * 讲系统中配置的需要校验验证码的URL根据校验的类型放入map
+     *
+     * @param urlString
+     * @param type
+     */
+    protected void addUrlToMap(String urlString, ValidateCodeType type) {
+        if (StringUtils.isNotBlank(urlString)) {
+            String[] urls = StringUtils.splitByWholeSeparatorPreserveAllTokens(urlString, ",");
+            for (String url : urls) {
+                urlMap.put(url, type);
+            }
+        }
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException {
+
+        ValidateCodeType type = getValidateCodeType(request);
+        if (type != null) {
+            logger.info("校验请求(" + request.getRequestURI() + ")中的验证码,验证码类型" + type);
+            try {
+                validateCodeProcessorHolder.findValidateCodeProcessor(type)
+                        .validate(new ServletWebRequest(request, response));
+                logger.info("验证码校验通过");
+            } catch (ValidateCodeException exception) {
+                authenticationFailureHandler.onAuthenticationFailure(request, response, exception);
+                return;
+            }
+        }
+
+        chain.doFilter(request, response);
 
     }
 
     /**
-     * 将系统中配置的需要校验验证码的URL根据校验的类型放入map
-     * @param urlString
-     * @param type
+     * 获取校验码的类型，如果当前请求不需要校验，则返回null
+     *
+     * @param request
+     * @return
      */
-    protected void addUrlToMap(String urlString,ValidateCodeType type){
-        if(StringUtils.isNotBlank(urlString)){
-            String[] urls = StringUtils.splitByWholeSeparatorPreserveAllTokens(urlString, ",");
-            for (String url : urls) {
-                urlMap.put(url,type);
-            }
-        }
-    }
-
-
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-        ValidateCodeType type=getValidateCodeType(request);
-        if(type != null){
-            logger.info("校验请求("+request.getRequestURI()+")中的验证码，验证码类型"+type);
-            try {
-                validateCodeProcessorHolder.findValidateCodeProcessor(type)
-                        .validate(new ServletWebRequest(request,response));
-                logger.info("验证码校验通过");
-            }catch (ValidateCodeException e){
-                authenticationFailureHandler.onAuthenticationFailure(request,response,e);
-                return;
-            }
-        }
-        filterChain.doFilter(request,response);
-    }
-
     private ValidateCodeType getValidateCodeType(HttpServletRequest request) {
         ValidateCodeType result = null;
         if (!StringUtils.equalsIgnoreCase(request.getMethod(), "get")) {
@@ -118,4 +122,5 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         }
         return result;
     }
+
 }

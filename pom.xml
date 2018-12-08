@@ -12,6 +12,7 @@
         <module>huobi-security-browser</module>
         <module>huobi-security-app</module>
         <module>huobi-security-demo</module>
+        <module>huobi-security-authorize</module>
     </modules>
     <packaging>pom</packaging>
 

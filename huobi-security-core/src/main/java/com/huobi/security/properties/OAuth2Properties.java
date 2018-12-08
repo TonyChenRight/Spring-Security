@@ -1,10 +1,14 @@
 package com.huobi.security.properties;
 
 public class OAuth2Properties {
-
-    private String jwtSigningKey="huobi";
-
-    private OAuth2ClientProperties[] clients ={};
+    /**
+     * 使用jwt时为token签名的秘钥
+     */
+    private String jwtSigningKey = "huobi";
+    /**
+     * 客户端配置
+     */
+    private OAuth2ClientProperties[] clients = {};
 
     public OAuth2ClientProperties[] getClients() {
         return clients;

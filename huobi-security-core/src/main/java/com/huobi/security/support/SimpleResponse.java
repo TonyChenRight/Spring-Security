@@ -1,6 +1,10 @@
 package com.huobi.security.support;
 
-public class SimpleResponse {
+
+/**
+ * 简单响应的封装类
+ */
+ public class SimpleResponse {
 
     public SimpleResponse(Object content){
         this.content = content;

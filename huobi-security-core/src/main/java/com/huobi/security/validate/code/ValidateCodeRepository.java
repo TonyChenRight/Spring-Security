@@ -5,7 +5,8 @@ import org.springframework.web.context.request.ServletWebRequest;
 import javax.validation.Valid;
 
 /**
- * 验证码存储接口
+ * 校验码存取器
+ *
  */
 public interface ValidateCodeRepository {
 
@@ -16,19 +17,18 @@ public interface ValidateCodeRepository {
      * @param validateCodeType
      */
     void save(ServletWebRequest request, ValidateCode code, ValidateCodeType validateCodeType);
-
-    /**
-     * 删除验证码
-     * @param request
-     * @param validateCodeType
-     */
-    void remove(ServletWebRequest request, ValidateCodeType validateCodeType);
-
     /**
      * 获取验证码
      * @param request
-     * @param codeType
+     * @param validateCodeType
      * @return
      */
-    ValidateCode get(ServletWebRequest request, ValidateCodeType codeType);
+    ValidateCode get(ServletWebRequest request, ValidateCodeType validateCodeType);
+    /**
+     * 移除验证码
+     * @param request
+     * @param codeType
+     */
+    void remove(ServletWebRequest request, ValidateCodeType codeType);
+
 }

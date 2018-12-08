@@ -1,6 +1,7 @@
 package com.huobi.security.social;
 
 import com.huobi.security.properties.SecurityProperties;
+import com.huobi.security.social.support.HuobiSpringSocialConfigurer;
 import com.huobi.security.social.support.SocialAuthenticationFilterPostProcessor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,39 +33,46 @@ public class SocialConfig extends SocialConfigurerAdapter {
     @Autowired
     private SecurityProperties securityProperties;
 
-    /**
-     * 有可能使用方不实现这个类
-     */
     @Autowired(required = false)
     private ConnectionSignUp connectionSignUp;
-
 
     @Autowired(required = false)
     private SocialAuthenticationFilterPostProcessor socialAuthenticationFilterPostProcessor;
 
-
     @Override
     public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
-        //Encryptors 是加解密工具
-        JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, Encryptors.noOpText());
+        JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource,
+                connectionFactoryLocator, Encryptors.noOpText());
         repository.setTablePrefix("huobi_");
-        if(connectionSignUp != null){
+        if(connectionSignUp != null) {
             repository.setConnectionSignUp(connectionSignUp);
         }
         return repository;
     }
 
+    /**
+     * 社交登录配置类，供浏览器或app模块引入设计登录配置用。
+     * @return
+     */
     @Bean
-    public SpringSocialConfigurer huobiSpringSocialConfigurer(){
-        String filterProcessesUrl  = securityProperties.getSocial().getFilterProcessesUrl();
-        HuobiSpringSocialConfigurer configurer =new HuobiSpringSocialConfigurer(filterProcessesUrl);
+    public SpringSocialConfigurer huobiSocialSecurityConfig() {
+        String filterProcessesUrl = securityProperties.getSocial().getFilterProcessesUrl();
+        HuobiSpringSocialConfigurer configurer = new HuobiSpringSocialConfigurer(filterProcessesUrl);
         configurer.signupUrl(securityProperties.getBrowser().getSignUpUrl());
         configurer.setSocialAuthenticationFilterPostProcessor(socialAuthenticationFilterPostProcessor);
         return configurer;
     }
 
+    /**
+     * 用来处理注册流程的工具类
+     *
+     * @param connectionFactoryLocator
+     * @return
+     */
     @Bean
-    public ProviderSignInUtils providerSignInUtils(ConnectionFactoryLocator connectionFactoryLocator){
-        return new ProviderSignInUtils(connectionFactoryLocator,getUsersConnectionRepository(connectionFactoryLocator));
+    public ProviderSignInUtils providerSignInUtils(ConnectionFactoryLocator connectionFactoryLocator) {
+        return new ProviderSignInUtils(connectionFactoryLocator,
+                getUsersConnectionRepository(connectionFactoryLocator)) {
+        };
     }
 }

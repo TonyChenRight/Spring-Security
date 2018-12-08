@@ -13,8 +13,10 @@ import java.util.List;
 
 /**
  * Weixin API调用模板， scope为Request的Spring bean, 根据当前用户的accessToken创建。
+ *
  */
 public class WeixinImpl extends AbstractOAuth2ApiBinding implements Weixin {
+
     /**
      *
      */
@@ -34,7 +36,6 @@ public class WeixinImpl extends AbstractOAuth2ApiBinding implements Weixin {
     /**
      * 默认注册的StringHttpMessageConverter字符集为ISO-8859-1，而微信返回的是UTF-8的，所以覆盖了原来的方法。
      */
-    @Override
     protected List<HttpMessageConverter<?>> getMessageConverters() {
         List<HttpMessageConverter<?>> messageConverters = super.getMessageConverters();
         messageConverters.remove(0);
@@ -60,4 +61,5 @@ public class WeixinImpl extends AbstractOAuth2ApiBinding implements Weixin {
         }
         return profile;
     }
+
 }

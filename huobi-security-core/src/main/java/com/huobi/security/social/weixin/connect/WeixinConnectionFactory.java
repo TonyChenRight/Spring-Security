@@ -12,6 +12,7 @@ import org.springframework.social.oauth2.OAuth2ServiceProvider;
 
 /**
  * 微信连接工厂
+ *
  */
 public class WeixinConnectionFactory extends OAuth2ConnectionFactory<Weixin> {
 
@@ -34,6 +35,7 @@ public class WeixinConnectionFactory extends OAuth2ConnectionFactory<Weixin> {
         return null;
     }
 
+
     @Override
     public Connection<Weixin> createConnection(AccessGrant accessGrant) {
         return new OAuth2Connection<Weixin>(getProviderId(), extractProviderUserId(accessGrant), accessGrant.getAccessToken(),
@@ -52,4 +54,6 @@ public class WeixinConnectionFactory extends OAuth2ConnectionFactory<Weixin> {
     private OAuth2ServiceProvider<Weixin> getOAuth2ServiceProvider() {
         return (OAuth2ServiceProvider<Weixin>) getServiceProvider();
     }
+
+
 }

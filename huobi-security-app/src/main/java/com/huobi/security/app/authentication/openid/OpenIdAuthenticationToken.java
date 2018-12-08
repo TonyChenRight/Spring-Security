@@ -7,6 +7,7 @@ import org.springframework.security.core.SpringSecurityCoreVersion;
 import java.util.Collection;
 
 public class OpenIdAuthenticationToken extends AbstractAuthenticationToken {
+
     private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
     // ~ Instance fields
@@ -58,6 +59,7 @@ public class OpenIdAuthenticationToken extends AbstractAuthenticationToken {
     public Object getPrincipal() {
         return this.principal;
     }
+
 
     public String getProviderId() {
         return providerId;

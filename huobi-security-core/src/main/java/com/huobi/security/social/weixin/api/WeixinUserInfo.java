@@ -1,6 +1,10 @@
 package com.huobi.security.social.weixin.api;
 
+/**
+ * 微信用户信息
+ */
 public class WeixinUserInfo {
+
     /**
      * 普通用户的标识，对当前开发者帐号唯一
      */
@@ -162,4 +166,5 @@ public class WeixinUserInfo {
     public void setLanguage(String language) {
         this.language = language;
     }
+
 }

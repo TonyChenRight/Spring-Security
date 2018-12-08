@@ -1,6 +1,10 @@
 package com.huobi.security.properties;
 
-public class SessionProperties {
+/**
+ * session管理相关配置项
+ *
+ */
+ public class SessionProperties {
     /**
      * 同一个用户在系统中的最大session数，默认1
      */

@@ -16,50 +16,63 @@ import org.springframework.web.context.request.ServletWebRequest;
 import java.util.Map;
 
 /**
- * 抽象类，处理验证码
- * @param <C>
+ * 抽象的图片验证码处理器
+ *
  */
 public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> implements ValidateCodeProcessor {
 
-    @Autowired
-    private ValidateCodeRepository validateCodeRepository;
-
     /**
-     * spring 提供的依赖搜索功能
-     * 收集系统中所有  ValidateCodeGenerator 接口的实现
+     * 收集系统中所有的 {@link ValidateCodeGenerator} 接口的实现。
      */
     @Autowired
     private Map<String, ValidateCodeGenerator> validateCodeGenerators;
 
+    @Autowired
+    private ValidateCodeRepository validateCodeRepository;
+
+
     @Override
     public void create(ServletWebRequest request) throws Exception {
-        C validateCode=generate(request);
-        save(request,validateCode);
-        send(request,validateCode);
-    }
-
-    @SuppressWarnings("unchecked")
-    private C generate(ServletWebRequest request){
-        String type = getProcessorType(request);
-        ValidateCodeGenerator validateCodeGenerator = validateCodeGenerators.get(type + "CodeGenerator");
-        return (C)validateCodeGenerator.generate(request);
-    }
-
-    private String getProcessorType(ServletWebRequest request) {
-        return StringUtils.substringAfter(request.getRequest().getRequestURI(),"/code/");
+        C validateCode = generate(request);
+        save(request, validateCode);
+        send(request, validateCode);
     }
 
     /**
-     * 保存验证码
+     * 生成校验码
+     *
+     * @param request
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    private C generate(ServletWebRequest request) {
+        String type = getValidateCodeType(request).toString().toLowerCase();
+        String generatorName = type + ValidateCodeGenerator.class.getSimpleName();
+        ValidateCodeGenerator validateCodeGenerator = validateCodeGenerators.get(generatorName);
+        if (validateCodeGenerator == null) {
+            throw new ValidateCodeException("验证码生成器" + generatorName + "不存在");
+        }
+        return (C) validateCodeGenerator.generate(request);
+    }
+
+    /**
+     * 保存校验码
+     *
      * @param request
      * @param validateCode
      */
     private void save(ServletWebRequest request, C validateCode) {
-        ValidateCode code= new ValidateCode(validateCode.getCode(),validateCode.getExpireTime());
-        validateCodeRepository.save(request,code,getValidateCodeType(request));
+        ValidateCode code = new ValidateCode(validateCode.getCode(), validateCode.getExpireTime());
+        validateCodeRepository.save(request, code, getValidateCodeType(request));
     }
 
-
+    /**
+     * 发送校验码，由子类实现
+     *
+     * @param request
+     * @param validateCode
+     * @throws Exception
+     */
     protected abstract void send(ServletWebRequest request, C validateCode) throws Exception;
 
     /**
@@ -107,5 +120,7 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
         }
 
         validateCodeRepository.remove(request, codeType);
+
     }
+
 }

@@ -1,5 +1,6 @@
 package com.huobi.security.validate.code.sms;
 
+import com.huobi.security.properties.SecurityConstants;
 import com.huobi.security.validate.code.ValidateCode;
 import com.huobi.security.validate.code.impl.AbstractValidateCodeProcessor;
 
@@ -17,13 +18,14 @@ public class SmsCodeProcessor extends AbstractValidateCodeProcessor<ValidateCode
     /**
      * 短信验证码发送器
      */
-
     @Autowired
     private SmsCodeSender smsCodeSender;
 
     @Override
     protected void send(ServletWebRequest request, ValidateCode validateCode) throws Exception {
-        String mobile = ServletRequestUtils.getRequiredStringParameter(request.getRequest(),"mobile");
-        smsCodeSender.send(mobile,validateCode.getCode());
+        String paramName = SecurityConstants.DEFAULT_PARAMETER_NAME_MOBILE;
+        String mobile = ServletRequestUtils.getRequiredStringParameter(request.getRequest(), paramName);
+        smsCodeSender.send(mobile, validateCode.getCode());
     }
+
 }

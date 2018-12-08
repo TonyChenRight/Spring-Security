@@ -1,8 +1,10 @@
 package com.huobi.security.browser;
 
+import com.huobi.security.properties.SecurityConstants;
 import com.huobi.security.properties.SecurityProperties;
+import com.huobi.security.social.SocialController;
+import com.huobi.security.social.support.SocialUserInfo;
 import com.huobi.security.support.SimpleResponse;
-import com.huobi.security.support.SocialUserInfo;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -27,57 +29,63 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 浏览器环境下与安全相关的服务
+ *
+ */
 @RestController
-public class BrowserSecurityController {
+public class BrowserSecurityController extends SocialController {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    private RequestCache requestCache =new HttpSessionRequestCache();
+    private RequestCache requestCache = new HttpSessionRequestCache();
 
-    private RedirectStrategy redirectStrategy=new DefaultRedirectStrategy();
+    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Autowired
     private SecurityProperties securityProperties;
 
     @Autowired
     private ProviderSignInUtils providerSignInUtils;
+
     /**
      * 当需要身份认证时，跳转到这里
+     *
      * @param request
      * @param response
      * @return
+     * @throws IOException
      */
-    @RequestMapping("/authentication/require")
+    @RequestMapping(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-    public SimpleResponse requireAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //获取引发跳转的请求
-        SavedRequest savedRequest = requestCache.getRequest(request,response);
+    public SimpleResponse requireAuthentication(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
 
-        if(savedRequest != null){
+        SavedRequest savedRequest = requestCache.getRequest(request, response);
+
+        if (savedRequest != null) {
             String targetUrl = savedRequest.getRedirectUrl();
-            logger.info("引发跳转的请求是："+targetUrl);
-            if(StringUtils.endsWithIgnoreCase(targetUrl,".html")){
-                redirectStrategy.sendRedirect(request,response,securityProperties.getBrowser().getLoginPage());
+            logger.info("引发跳转的请求是:" + targetUrl);
+            if (StringUtils.endsWithIgnoreCase(targetUrl, ".html")) {
+                redirectStrategy.sendRedirect(request, response, securityProperties.getBrowser().getSignInPage());
             }
         }
+
         return new SimpleResponse("访问的服务需要身份认证，请引导用户到登录页");
     }
 
-    @GetMapping("/social/user")
-    public SocialUserInfo getSocialUserInfo(HttpServletRequest request){
-        SocialUserInfo userInfo =new SocialUserInfo();
+    /**
+     * 用户第一次社交登录时，会引导用户进行用户注册或绑定，此服务用于在注册或绑定页面获取社交网站用户信息
+     *
+     * @param request
+     * @return
+     */
+    @GetMapping(SecurityConstants.DEFAULT_SOCIAL_USER_INFO_URL)
+    public SocialUserInfo getSocialUserInfo(HttpServletRequest request) {
         Connection<?> connection = providerSignInUtils.getConnectionFromSession(new ServletWebRequest(request));
-        userInfo.setProviderId(connection.getKey().getProviderId());
-        userInfo.setProviderUserId(connection.getKey().getProviderUserId());
-        userInfo.setNickname(connection.getDisplayName());
-        userInfo.setHeadimg(connection.getImageUrl());
-        return userInfo;
+        return buildSocialUserInfo(connection);
     }
 
-    @GetMapping("/session/invalid")
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public SimpleResponse sessionInvalid(){
-        String message="session失效";
-        return new SimpleResponse(message);
-    }
+
+
 }

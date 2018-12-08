@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class OpenIdAuthenticationProvider implements AuthenticationProvider {
+
     private SocialUserDetailsService userDetailsService;
 
     private UsersConnectionRepository usersConnectionRepository;
@@ -45,7 +46,6 @@ public class OpenIdAuthenticationProvider implements AuthenticationProvider {
         return authenticationResult;
     }
 
-
     @Override
     public boolean supports(Class<?> authentication) {
         return OpenIdAuthenticationToken.class.isAssignableFrom(authentication);
@@ -66,4 +66,5 @@ public class OpenIdAuthenticationProvider implements AuthenticationProvider {
     public void setUsersConnectionRepository(UsersConnectionRepository usersConnectionRepository) {
         this.usersConnectionRepository = usersConnectionRepository;
     }
+
 }

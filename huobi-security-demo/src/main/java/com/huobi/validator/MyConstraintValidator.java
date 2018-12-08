@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class MyConstraintValidator implements ConstraintValidator<MyConstraint,Object> {
+public class MyConstraintValidator implements ConstraintValidator<MyConstraint, Object> {
 
     @Autowired
     private HelloService helloService;
 
     @Override
-    public void initialize(MyConstraint myConstraint) {
+    public void initialize(MyConstraint constraintAnnotation) {
         System.out.println("my validator init");
     }
 
@@ -21,6 +21,7 @@ public class MyConstraintValidator implements ConstraintValidator<MyConstraint,O
     public boolean isValid(Object value, ConstraintValidatorContext context) {
         helloService.greeting("tom");
         System.out.println(value);
-        return false;
+        return true;
     }
+
 }

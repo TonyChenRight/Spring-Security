@@ -2,7 +2,7 @@ package com.huobi.security.social.weixin.config;
 
 import com.huobi.security.properties.SecurityProperties;
 import com.huobi.security.properties.WeixinProperties;
-import com.huobi.security.social.HuobiConnectView;
+import com.huobi.security.social.view.HuobiConnectView;
 import com.huobi.security.social.weixin.connect.WeixinConnectionFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +20,7 @@ import org.springframework.web.servlet.View;
 @Configuration
 @ConditionalOnProperty(prefix = "huobi.security.social.weixin", name = "app-id")
 public class WeixinAutoConfiguration extends SocialAutoConfigurerAdapter {
+
     @Autowired
     private SecurityProperties securityProperties;
 
@@ -30,14 +31,10 @@ public class WeixinAutoConfiguration extends SocialAutoConfigurerAdapter {
                 weixinConfig.getAppSecret());
     }
 
-    /**
-     * weixinConnect 为解绑视图
-     * weixinConnected 为绑定视图
-     * @return
-     */
     @Bean({"connect/weixinConnect", "connect/weixinConnected"})
     @ConditionalOnMissingBean(name = "weixinConnectedView")
     public View weixinConnectedView() {
         return new HuobiConnectView();
     }
+
 }

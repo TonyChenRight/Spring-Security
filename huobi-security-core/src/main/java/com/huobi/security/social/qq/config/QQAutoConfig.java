@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.social.connect.ConnectionFactory;
 
 @Configuration
-//当指定的配置已经有值了才生效这个配置
 @ConditionalOnProperty(prefix = "huobi.security.social.qq",name="app-id")
 public class QQAutoConfig extends SocialAutoConfigurerAdapter {
 
@@ -20,7 +19,7 @@ public class QQAutoConfig extends SocialAutoConfigurerAdapter {
 
     @Override
     protected ConnectionFactory<?> createConnectionFactory() {
-        QQProperties qq = securityProperties.getSocial().getQq();
-        return new QQConnectionFactory(qq.getProviderId(),qq.getAppId(),qq.getAppSecret());
+        QQProperties qqConfig = securityProperties.getSocial().getQq();
+        return new QQConnectionFactory(qqConfig.getProviderId(), qqConfig.getAppId(), qqConfig.getAppSecret());
     }
 }

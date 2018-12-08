@@ -12,14 +12,15 @@ import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class OpenIdAuthenticationSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
     @Autowired
-    private AuthenticationSuccessHandler imoocAuthenticationSuccessHandler;
+    private AuthenticationSuccessHandler huobiAuthenticationSuccessHandler;
 
     @Autowired
-    private AuthenticationFailureHandler imoocAuthenticationFailureHandler;
+    private AuthenticationFailureHandler huobiAuthenticationFailureHandler;
 
     @Autowired
     private SocialUserDetailsService userDetailsService;
@@ -32,8 +33,8 @@ public class OpenIdAuthenticationSecurityConfig extends SecurityConfigurerAdapte
 
         OpenIdAuthenticationFilter OpenIdAuthenticationFilter = new OpenIdAuthenticationFilter();
         OpenIdAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
-        OpenIdAuthenticationFilter.setAuthenticationSuccessHandler(imoocAuthenticationSuccessHandler);
-        OpenIdAuthenticationFilter.setAuthenticationFailureHandler(imoocAuthenticationFailureHandler);
+        OpenIdAuthenticationFilter.setAuthenticationSuccessHandler(huobiAuthenticationSuccessHandler);
+        OpenIdAuthenticationFilter.setAuthenticationFailureHandler(huobiAuthenticationFailureHandler);
 
         OpenIdAuthenticationProvider OpenIdAuthenticationProvider = new OpenIdAuthenticationProvider();
         OpenIdAuthenticationProvider.setUserDetailsService(userDetailsService);
@@ -43,4 +44,5 @@ public class OpenIdAuthenticationSecurityConfig extends SecurityConfigurerAdapte
                 .addFilterAfter(OpenIdAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
     }
+
 }

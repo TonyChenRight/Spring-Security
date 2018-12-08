@@ -4,22 +4,38 @@ import java.util.Collection;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.SpringSecurityCoreVersion;
 
+/**
+ * 短信登录验证信息封装类
+ */
 public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
-    private static final long serialVersionUID = 420L;
+    private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
+
+    // ~ Instance fields
+    // ================================================================================================
+
     private final Object principal;
+
+    // ~ Constructors
+    // ===================================================================================================
+
 
     public SmsCodeAuthenticationToken(String mobile) {
         super(null);
         this.principal = mobile;
-        this.setAuthenticated(false);
+        setAuthenticated(false);
     }
 
-    public SmsCodeAuthenticationToken(Object principal, Collection<? extends GrantedAuthority> authorities) {
+    public SmsCodeAuthenticationToken(Object principal,
+                                      Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
-        super.setAuthenticated(true);
+        super.setAuthenticated(true); // must use super, as we override
     }
+
+    // ~ Methods
+    // ========================================================================================================
 
     @Override
     public Object getCredentials() {
@@ -34,10 +50,11 @@ public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
         if (isAuthenticated) {
-            throw new IllegalArgumentException("Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead");
-        } else {
-            super.setAuthenticated(false);
+            throw new IllegalArgumentException(
+                    "Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead");
         }
+
+        super.setAuthenticated(false);
     }
 
     @Override

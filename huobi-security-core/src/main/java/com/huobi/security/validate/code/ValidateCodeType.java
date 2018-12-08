@@ -2,6 +2,10 @@ package com.huobi.security.validate.code;
 
 import com.huobi.security.properties.SecurityConstants;
 
+/**
+ *
+ * 校验码类型
+ */
 public enum ValidateCodeType {
 
     /**
@@ -28,4 +32,5 @@ public enum ValidateCodeType {
      * @return
      */
     public abstract String getParamNameOnValidate();
+
 }

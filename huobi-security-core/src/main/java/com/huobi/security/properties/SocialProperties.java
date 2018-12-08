@@ -1,12 +1,17 @@
 package com.huobi.security.properties;
-
+/**
+ * 社交登录配置项
+ */
 public class SocialProperties {
 
-    private String filterProcessesUrl="/auth";
+    /**
+     * 社交登录功能拦截的url
+     */
+    private String filterProcessesUrl = "/auth";
 
-    private QQProperties qq =new QQProperties();
+    private QQProperties qq = new QQProperties();
 
-    private WeixinProperties weixin=new WeixinProperties();
+    private WeixinProperties weixin = new WeixinProperties();
 
     public QQProperties getQq() {
         return qq;

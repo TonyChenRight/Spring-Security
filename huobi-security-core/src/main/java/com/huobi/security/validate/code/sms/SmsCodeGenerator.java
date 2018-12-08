@@ -9,7 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
 
-@Component("smsCodeGenerator")
+/**
+ * 短信验证码生成器
+ *
+ */
+@Component("smsValidateCodeGenerator")
 public class SmsCodeGenerator implements ValidateCodeGenerator {
 
     @Autowired
@@ -18,7 +22,7 @@ public class SmsCodeGenerator implements ValidateCodeGenerator {
     @Override
     public ValidateCode generate(ServletWebRequest request) {
         String code = RandomStringUtils.randomNumeric(securityProperties.getCode().getSms().getLength());
-        return new ValidateCode(code,securityProperties.getCode().getSms().getExpireIn());
+        return new ValidateCode(code, securityProperties.getCode().getSms().getExpireIn());
     }
 
     public SecurityProperties getSecurityProperties() {
@@ -28,4 +32,7 @@ public class SmsCodeGenerator implements ValidateCodeGenerator {
     public void setSecurityProperties(SecurityProperties securityProperties) {
         this.securityProperties = securityProperties;
     }
+
+
+
 }

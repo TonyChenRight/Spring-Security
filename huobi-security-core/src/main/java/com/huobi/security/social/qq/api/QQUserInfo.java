@@ -194,4 +194,5 @@ public class QQUserInfo {
         this.is_yellow_year_vip = is_yellow_year_vip;
     }
 
+
 }
