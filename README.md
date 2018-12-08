@@ -15,6 +15,10 @@
 >* huobi-serurity-demo : 样例程序
 >* test 作为第三方集成服务使用
 
+![cmd-markdown-logo](./doc/manage.png)
+
+![cmd-markdown-logo](./doc/swagger.png)
+
 ## 基本技术点  tag v1.0 
 >* restful api编写及常用注解
 >* jsonPath语法限定path参数
